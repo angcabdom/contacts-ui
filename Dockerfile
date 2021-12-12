@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM node:9-alpine
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN npm install
 
 RUN npm run build
 
-COPY . .
+COPY /build .
 
 EXPOSE 3000
 
