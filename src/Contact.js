@@ -1,5 +1,3 @@
-
-
 function Contact(props) {
     return (
         <tr>
