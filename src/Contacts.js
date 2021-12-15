@@ -1,11 +1,23 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import EditableContact from "./EditableContact.js";
 import Alert from "./Alert.js";
 import NewContact from "./NewContact.js";
+import ContactsApi from "./ContactsApi.js";
 
 function Contacts(props) {
     const [message, setMessage] = useState(null);
-    const [contacts, setContacts] = useState(props.contacts);
+    const [contacts, setContacts] = useState([]);
+
+    useEffect(() => {
+        ContactsApi.getAllContacts().then(
+            (result) => {
+                setContacts(result);
+            },
+            (error) => {
+                setMessage(error);
+            }
+        )
+    }, []);
 
     function onAlertClose(){
         setMessage(null);
