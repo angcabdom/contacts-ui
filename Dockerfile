@@ -1,16 +1,17 @@
-FROM node:9-alpine
+FROM node:14 as dev
 
-WORKDIR /app
+WORKDIR /src
 
 COPY package.json .
 COPY package-lock.json .
 
 RUN npm install
 
-RUN npm run build
-
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD npm start
+FROM nginx:alpine
+COPY --from=dev /src/build /usr/share/nginx/html
+
+EXPOSE 80

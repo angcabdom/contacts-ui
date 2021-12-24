@@ -1,4 +1,3 @@
-
 apiVersion: v2
 name: contacts-frontend
 description: A frontend for contacts

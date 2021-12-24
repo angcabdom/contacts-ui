@@ -3,16 +3,14 @@ kind: Service
 metadata:
   name: frontend
   labels:
-    {{- include "contacts.labels" . | nindent 4}}
-  annotations:
-    dev.okteto.com/auto-ingress: "true"
+    {{- include "contacts.labels" . | nindent 4 }}
 spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
   selector:
     app.kubernetes.io/name: frontend
     app.kubernetes.io/instance: {{ .Release.Name }}
-  type: ClusterIP
-  ports:
-    - targetPort: 3000
-      protocol: TCP
-      name: http
-      port: 3000
