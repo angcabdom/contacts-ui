@@ -1,24 +1,25 @@
 class ContactsApi {
-    API_BASE_URL ="/api/v1";
+    static API_BASE_URL ="/api/v1";
 
     static requestHeaders() {
-        return {
-
-        }
+        return {}
     }
 
-    static getAllContacts(){
+    static async getAllContacts() {
         const headers = this.requestHeaders();
         const request = new Request(ContactsApi.API_BASE_URL + "/contacts", {
             method: 'GET',
             headers: headers
         });
 
-        return fetch(request).then(response => {
-            return response.json();
-        })
-    }
+        const response = await fetch(request);
 
+        if (! response.ok) {
+            throw Error("Response not valid" + response.status);
+        }
+
+        return response.json();
+    }
 }
 
 export default ContactsApi;

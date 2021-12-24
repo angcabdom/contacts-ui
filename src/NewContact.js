@@ -1,18 +1,17 @@
-import { useState } from "react/cjs/react.development"
+import { useState } from "react"
 
-function NewContact(props){
+function NewContact(props) {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
 
-    function onClick(){
+    function onClick() {
         const newContact = {
             name: name,
             phone: phone
         };
-
         const result = props.onAddContact(newContact);
 
-        if (result){
+        if (result) {
             setName('');
             setPhone('');
         }

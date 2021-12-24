@@ -1,13 +1,13 @@
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 import Contact from "./Contact.js";
 import EditContact from "./EditContact.js";
 
 function EditableContact(props) {
     const [isEditing, setIsEditing] = useState(false);
 
-    function saveContact(contact){
+    function saveContact(contact) {
         const result = props.onEdit(contact);
-        if (result){
+        if (result) {
             setIsEditing(false);
         }
     }
@@ -15,7 +15,7 @@ function EditableContact(props) {
     var contactRender;
     if (isEditing) {
         contactRender = <EditContact contact={props.contact} onDelete={props.onDelete} onSave={saveContact}/>;
-    }else {
+    } else {
         contactRender = <Contact contact={props.contact} onDelete={props.onDelete} onEdit={() => setIsEditing(true)}/>;
     }
 

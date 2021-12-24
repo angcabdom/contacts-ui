@@ -7,7 +7,6 @@ function Contact(props) {
                 <button className="btn btn-primary" onClick={() => props.onEdit(props.contact)}>Edit</button>
                 <button className="btn btn-primary" onClick={() => props.onDelete(props.contact)}>Delete</button>
             </td>
-
         </tr>
     )
 }

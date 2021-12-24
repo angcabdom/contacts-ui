@@ -1,39 +1,33 @@
-import { Fragment, useEffect, useState } from "react";
-import EditableContact from "./EditableContact.js";
-import Alert from "./Alert.js";
-import NewContact from "./NewContact.js";
-import ContactsApi from "./ContactsApi.js";
+import { Fragment, useEffect, useState } from 'react';
+import EditableContact from './EditableContact.js';
+import Alert from './Alert.js';
+import NewContact from './NewContact.js';
+import ContactsApi from './ContactsApi.js';
 
 function Contacts(props) {
+
     const [message, setMessage] = useState(null);
     const [contacts, setContacts] = useState([]);
 
     useEffect(() => {
-        ContactsApi.getAllContacts().then(
-            (result) => {
-                setContacts(result);
-            },
-            (error) => {
-                setMessage(error);
+        async function fetchContacts() {
+            try {
+                const c = await ContactsApi.getAllContacts();
+                setContacts(c);
+            } catch (error) {
+                setMessage('Could not contact with the server');
             }
-        )
+        }
+
+        fetchContacts();
     }, []);
 
-    function onAlertClose(){
+    function onAlertClose() {
         setMessage(null);
     }
 
-    function validateContactName(contact) {
-        if (contact.name === ''){
-            setMessage('A name must be provided');
-            return false;
-        }
-        return true;
-    }
-
-    function onContactEdit(newContact, oldContact){
+    function onContactEdit(newContact, oldContact) {
         const validation = validateContactName(newContact);
-
         if (! validation) {
             return false;
         }
@@ -44,21 +38,30 @@ function Contacts(props) {
         }
 
         setContacts((prevContacts) => {
-            return prevContacts.map((c) => c.name === oldContact.name ? newContact : c);
-        });
+            const newContacts = prevContacts.map((c) => c.name === oldContact.name ? newContact : c);
+            return newContacts
+        })
 
         return true;
     }
 
-    function onContactDelete(contact){
+    function onContactDelete(contact) {
         setContacts((prevContacts) => {
             return prevContacts.filter((c) => c.name !== contact.name);
         });
     }
 
+    function validateContactName(contact) {
+        if (contact.name === '') {
+            setMessage('A name must be provided');
+            return false;
+        }
+
+        return true;
+    }
+
     function onAddContact(contact) {
         const validation = validateContactName(contact);
-
         if (! validation) {
             return false;
         }
@@ -70,18 +73,18 @@ function Contacts(props) {
 
         setContacts((prevContacts) => {
             if (! prevContacts.find(c => c.name === contact.name)) {
-                return [...prevContacts,contact]
-            }else {
+                return [...prevContacts, contact];
+            } else {
                 setMessage('Duplicated contact');
                 return prevContacts;
             }
-           
         });
+        return true;
     }
 
     return (
         <Fragment>
-            <Alert message={message} onClose={onAlertClose()}/>
+            <Alert message={message} onClose={onAlertClose}/>
             <table className="table">
                 <thead>
                     <tr>
